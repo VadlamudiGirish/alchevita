@@ -104,7 +104,7 @@ export default function Home({ initialSymptom }) {
       )}
 
       {remedies.length === 0 ? (
-        <EmptyMessage>No remedies found</EmptyMessage>
+        <EmptyMessage>There are no remedies available.</EmptyMessage>
       ) : (
         <CardList
           elements={remedies}
