@@ -33,6 +33,7 @@ export default function CardList({
   elements = [],
   currentPath,
   isAuthenticated,
+  onBookmarkToggle,
 }) {
   return (
     <StyledMain>
@@ -46,6 +47,7 @@ export default function CardList({
               remedy={el}
               currentPath={currentPath}
               isAuthenticated={isAuthenticated}
+              onBookmarkToggle={onBookmarkToggle}
             />
           ))}
         </StyledGrid>

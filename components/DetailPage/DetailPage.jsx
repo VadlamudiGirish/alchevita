@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useRef } from "react";
 import styled from "styled-components";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 
 const Wrapper = styled.section`
   width: 100%;
@@ -205,6 +206,7 @@ function DeleteConfirmationModal({ onCancel, onConfirm }) {
 export default function DetailPage({ element }) {
   const router = useRouter();
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const { status } = useSession();
 
   const handleDelete = async () => {
     const res = await fetch(`/api/remedies/${element._id}`, {
@@ -294,11 +296,18 @@ export default function DetailPage({ element }) {
               onConfirm={handleDelete}
             />
           )}
-          <AllButtons>
-            <Button className="delete" onClick={() => setConfirmDelete(true)}>
-              Delete
-            </Button>
-          </AllButtons>
+
+          {status === "authenticated" && (
+            <AllButtons>
+              <Button
+                className="delete"
+                onClick={() => setConfirmDelete(true)}
+                aria-label="Delete remedy"
+              >
+                Delete Remedy
+              </Button>
+            </AllButtons>
+          )}
         </Article>
       </Flex>
     </Wrapper>

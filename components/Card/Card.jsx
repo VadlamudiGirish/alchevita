@@ -3,10 +3,9 @@ import styled from "styled-components";
 import { StyledImage } from "../StyledImage/StyledImage";
 import SymptomsList from "../SymptomsList/SymptomsList";
 import BookMarkButton from "../BookmarkButton/BookmarkButton";
-import { useBookmarks } from "@/hooks/useBookmarks";
 
 const CardContainer = styled.li`
-  position: relative; /* <-- ensure absolute children (bookmark) are positioned correctly */
+  position: relative;
   border: 1px solid black;
   border-radius: 0.8rem;
   padding: 0.5rem;
@@ -18,14 +17,18 @@ const ImageContainer = styled.div`
   margin-bottom: 20px;
 `;
 
-export default function Card({ remedy, currentPath, isAuthenticated }) {
-  const { toggle } = useBookmarks();
+export default function Card({
+  remedy,
+  currentPath,
+  isAuthenticated,
+  onBookmarkToggle,
+}) {
   return (
     <CardContainer>
       {isAuthenticated && (
         <BookMarkButton
           bookmarked={remedy.isBookmarked}
-          onToggle={() => toggle(remedy._id, remedy.isBookmarked, currentPath)}
+          onToggle={() => onBookmarkToggle(remedy._id, remedy.isBookmarked)}
         />
       )}
       <Link
