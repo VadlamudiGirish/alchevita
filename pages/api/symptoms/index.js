@@ -1,7 +1,11 @@
 import dbConnect from "@/db/connect";
 import { Symptom } from "@/db/models/Symptom";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "../auth/[...nextauth]";
 
 export default async function handler(req, res) {
+  const session = await getServerSession(req, res, authOptions);
+
   await dbConnect();
   if (req.method === "GET") {
     try {

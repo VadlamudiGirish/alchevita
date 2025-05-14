@@ -1,7 +1,18 @@
 import dbConnect from "@/db/connect";
 import { BookmarkRemedy } from "@/db/models/BookmarkRemedy";
+import { getServerSession } from "next-auth/next";
+import { getToken } from "next-auth/jwt";
+import { authOptions } from "../auth/[...nextauth]";
 
 export default async function handler(req, res) {
+  const session = await getServerSession(req, res, authOptions);
+  const token = await getToken({ req });
+  const userId = token?.sub;
+
+  if (!session) {
+    return res.status(401).json({ status: "Not authorized" });
+  }
+
   try {
     await dbConnect();
   } catch (dbError) {
@@ -15,7 +26,7 @@ export default async function handler(req, res) {
 
   try {
     if (req.method === "GET") {
-      const bookmarkRemedies = await BookmarkRemedy.find();
+      const bookmarkRemedies = await BookmarkRemedy.find({ owner: userId });
 
       res.status(200).json(bookmarkRemedies);
       return;
@@ -32,7 +43,7 @@ export default async function handler(req, res) {
     if (req.method === "POST") {
       const bookmarkRemedyData = req.body;
 
-      await BookmarkRemedy.create(bookmarkRemedyData);
+      await BookmarkRemedy.create({ ...bookmarkRemedyData, owner: userId });
 
       res.status(201).json({ status: "Remedy bookmark created" });
       return;

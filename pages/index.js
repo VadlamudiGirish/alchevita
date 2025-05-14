@@ -6,6 +6,7 @@ import CardList from "@/components/CardList/CardList";
 import TitleBar from "@/components/TitleBar/TitleBar";
 import RemedyFilter from "@/components/RemedyFilter/RemedyFilter";
 import { useBookmarks } from "@/hooks/useBookmarks";
+import { useSession } from "next-auth/react";
 
 const EmptyMessage = styled.p`
   margin: 2rem 0;
@@ -15,6 +16,7 @@ const EmptyMessage = styled.p`
 
 export default function Home({ initialSymptom }) {
   const router = useRouter();
+  const { status } = useSession();
   const [selectedSymptom, setSelectedSymptom] = useState(initialSymptom || "");
   const currentPath = router.pathname;
 
@@ -33,9 +35,13 @@ export default function Home({ initialSymptom }) {
     mutate,
   } = useSWR(
     selectedSymptom
-      ? `/api/remedies?symptom=${selectedSymptom}`
+      ? `/api/remedies?symptom=${encodeURIComponent(selectedSymptom)}`
       : "/api/remedies",
-    { fallbackData: [] }
+    {
+      fallbackData: [],
+      // Only fetch if authenticated
+      revalidateOnFocus: status === "authenticated",
+    }
   );
 
   // Symptom filter handlers
@@ -58,6 +64,10 @@ export default function Home({ initialSymptom }) {
 
   // Bookmark toggle handler
   const handleBookmarkToggle = async (remedyId, isBookmarked) => {
+    if (status !== "authenticated") {
+      return;
+    }
+
     // Optimistic update
     const optimisticData = remedies.map((remedy) =>
       remedy._id === remedyId
@@ -100,6 +110,7 @@ export default function Home({ initialSymptom }) {
           elements={remedies}
           onBookmarkToggle={handleBookmarkToggle}
           currentPath={currentPath}
+          isAuthenticated={status === "authenticated"}
         />
       )}
     </>

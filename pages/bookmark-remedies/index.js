@@ -6,6 +6,7 @@ import CardList from "@/components/CardList/CardList";
 import TitleBar from "@/components/TitleBar/TitleBar";
 import RemedyFilter from "@/components/RemedyFilter/RemedyFilter";
 import { useBookmarks } from "@/hooks/useBookmarks";
+import { useSession } from "next-auth/react";
 
 const EmptyMessage = styled.p`
   margin: 2rem 0;
@@ -13,14 +14,17 @@ const EmptyMessage = styled.p`
   color: #666;
 `;
 
+const AccessDenied = styled.h2`
+  text-align: center;
+  color: #ff4444;
+  margin-top: 2rem;
+`;
+
 export default function Home({ initialSymptom }) {
   const router = useRouter();
+  const { status } = useSession();
   const [selectedSymptom, setSelectedSymptom] = useState(initialSymptom || "");
   const currentPath = router.pathname;
-
-  useEffect(() => {
-    setSelectedSymptom(router.query.symptom || "");
-  }, [router.query.symptom]);
 
   // Get bookmark functionality
   const { toggle } = useBookmarks();
@@ -32,15 +36,29 @@ export default function Home({ initialSymptom }) {
     error,
     mutate,
   } = useSWR(
-    selectedSymptom
-      ? `/api/remedies?bookmarked=true&symptom=${encodeURIComponent(
-          selectedSymptom
-        )}`
-      : `/api/remedies?bookmarked=true`,
+    status === "authenticated"
+      ? selectedSymptom
+        ? `/api/remedies?bookmarked=true&symptom=${encodeURIComponent(
+            selectedSymptom
+          )}`
+        : `/api/remedies?bookmarked=true`
+      : null,
     {
       fallbackData: [],
     }
   );
+
+  useEffect(() => {
+    setSelectedSymptom(router.query.symptom || "");
+  }, [router.query.symptom]);
+
+  if (status !== "authenticated") {
+    return (
+      <AccessDenied>
+        Please log in to view your bookmarked remedies
+      </AccessDenied>
+    );
+  }
 
   // Symptom filter handlers
   const handleSelect = (symptomName) => {

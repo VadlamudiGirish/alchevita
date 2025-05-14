@@ -18,14 +18,16 @@ const ImageContainer = styled.div`
   margin-bottom: 20px;
 `;
 
-export default function Card({ remedy, currentPath }) {
+export default function Card({ remedy, currentPath, isAuthenticated }) {
   const { toggle } = useBookmarks();
   return (
     <CardContainer>
-      <BookMarkButton
-        bookmarked={remedy.isBookmarked}
-        onToggle={() => toggle(remedy._id, remedy.isBookmarked, currentPath)}
-      />
+      {isAuthenticated && (
+        <BookMarkButton
+          bookmarked={remedy.isBookmarked}
+          onToggle={() => toggle(remedy._id, remedy.isBookmarked, currentPath)}
+        />
+      )}
       <Link
         href={`remedies/${remedy._id}`}
         aria-label={`View details for ${remedy.title}`}

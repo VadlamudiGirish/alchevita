@@ -2,6 +2,7 @@ import Head from "next/head";
 import styled from "styled-components";
 import Navbar from "../Navbar/Navbar";
 import Logo from "../Logo/Logo";
+import Login from "../Login/Login";
 
 const MainContent = styled.main`
   padding-bottom: 5rem;
@@ -16,6 +17,7 @@ export default function Layout({ children }) {
       </Head>
       <Logo />
       <MainContent>{children}</MainContent>
+      <Login />
       <Navbar />
     </>
   );

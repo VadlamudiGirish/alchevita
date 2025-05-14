@@ -1,8 +1,15 @@
 import dbConnect from "@/db/connect";
 import { Remedy } from "@/db/models/Remedy";
 import { Symptom } from "@/db/models/Symptom";
+import { getServerSession } from "next-auth/next";
+import { getToken } from "next-auth/jwt";
+import { authOptions } from "../auth/[...nextauth]";
 
 export default async function handler(req, res) {
+  const session = await getServerSession(req, res, authOptions);
+  const token = await getToken({ req });
+  const userId = token?.sub;
+
   try {
     await dbConnect();
 
@@ -12,7 +19,10 @@ export default async function handler(req, res) {
 
     const { bookmarked, symptom } = req.query;
 
-    // Handle symptom filtering first
+    if (bookmarked === "true" && !session) {
+      return res.status(401).json({ status: "Not authorized" });
+    }
+
     let symptomFilter = {};
     if (symptom) {
       const symDoc = await Symptom.findOne({ name: symptom });
@@ -20,14 +30,24 @@ export default async function handler(req, res) {
       symptomFilter = { symptoms: symDoc._id };
     }
 
-    // Base aggregation pipeline
-    const aggregation = [
-      { $match: symptomFilter }, // Apply symptom filter here
+    const remedies = await Remedy.aggregate([
+      { $match: symptomFilter },
       {
         $lookup: {
           from: "bookmarkremedies",
-          localField: "_id",
-          foreignField: "remedyId",
+          let: { remedyId: "$_id" },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $eq: ["$remedyId", "$$remedyId"] },
+                    ...(userId ? [{ $eq: ["$owner", userId] }] : []),
+                  ],
+                },
+              },
+            },
+          ],
           as: "bookmarkInfo",
         },
       },
@@ -36,19 +56,13 @@ export default async function handler(req, res) {
           from: "symptoms",
           let: { symptomIds: "$symptoms" },
           pipeline: [
-            {
-              $match: {
-                $expr: { $in: ["$_id", "$$symptomIds"] },
-              },
-            },
+            { $match: { $expr: { $in: ["$_id", "$$symptomIds"] } } },
             {
               $addFields: {
                 __order: { $indexOfArray: ["$$symptomIds", "$_id"] },
               },
             },
-            {
-              $sort: { __order: 1 },
-            },
+            { $sort: { __order: 1 } },
           ],
           as: "symptomsData",
         },
@@ -66,21 +80,15 @@ export default async function handler(req, res) {
         },
       },
       { $unset: ["bookmarkInfo", "symptomsData"] },
-    ];
+      ...(bookmarked === "true" ? [{ $match: { isBookmarked: true } }] : []),
+      { $sort: { _id: -1 } },
+    ]);
 
-    // Add bookmarked filter if needed
-    if (bookmarked === "true") {
-      aggregation.push({ $match: { isBookmarked: true } });
-    }
-    aggregation.push({ $sort: { _id: -1 } }); // sorted by id
-
-    const remedies = await Remedy.aggregate(aggregation);
     return res.status(200).json(remedies);
   } catch (error) {
     console.error("API Error:", error);
-    return res.status(500).json({
-      status: "Server Error",
-      error: error.message || "Failed to process request",
-    });
+    return res
+      .status(500)
+      .json({ status: "Server Error", error: error.message });
   }
 }

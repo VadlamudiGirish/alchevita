@@ -29,7 +29,11 @@ const EmptyMessage = styled.p`
   text-align: center;
 `;
 
-export default function CardList({ elements = [], currentPath }) {
+export default function CardList({
+  elements = [],
+  currentPath,
+  isAuthenticated,
+}) {
   return (
     <StyledMain>
       {elements.length === 0 ? (
@@ -37,7 +41,12 @@ export default function CardList({ elements = [], currentPath }) {
       ) : (
         <StyledGrid>
           {elements.map((el) => (
-            <Card key={el._id} remedy={el} currentPath={currentPath} />
+            <Card
+              key={el._id}
+              remedy={el}
+              currentPath={currentPath}
+              isAuthenticated={isAuthenticated}
+            />
           ))}
         </StyledGrid>
       )}
