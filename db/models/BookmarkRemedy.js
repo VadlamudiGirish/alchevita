@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 
 const bookmarkRemedySchema = new Schema({
   remedyId: { type: Schema.Types.ObjectId, ref: "Remedy", required: true },
-  owner: { type: String, required: true },
+  owner: { type: Schema.Types.ObjectId, ref: "User", required: true },
 });
 
 const BookmarkRemedy =

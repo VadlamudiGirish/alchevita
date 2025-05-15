@@ -2,13 +2,10 @@ import dbConnect from "@/db/connect";
 import { Remedy } from "@/db/models/Remedy";
 import { Symptom } from "@/db/models/Symptom";
 import { getServerSession } from "next-auth/next";
-import { getToken } from "next-auth/jwt";
 import { authOptions } from "../auth/[...nextauth]";
 
 export default async function handler(req, res) {
   const session = await getServerSession(req, res, authOptions);
-  const token = await getToken({ req });
-  const userId = token?.sub;
 
   try {
     await dbConnect();
@@ -42,7 +39,9 @@ export default async function handler(req, res) {
                 $expr: {
                   $and: [
                     { $eq: ["$remedyId", "$$remedyId"] },
-                    ...(userId ? [{ $eq: ["$owner", userId] }] : []),
+                    ...(session?.user?.id
+                      ? [{ $eq: ["$owner", session.user.id] }]
+                      : []),
                   ],
                 },
               },
