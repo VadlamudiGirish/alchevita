@@ -39,8 +39,7 @@ export default function Home({ initialSymptom }) {
       : "/api/remedies",
     {
       fallbackData: [],
-      // Only fetch if authenticated
-      revalidateOnFocus: status === "authenticated",
+      revalidateOnFocus: true,
     }
   );
 
