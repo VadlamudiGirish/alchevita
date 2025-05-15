@@ -1,11 +1,11 @@
 import dbConnect from "@/db/connect";
 import { Remedy } from "@/db/models/Remedy";
 import { Symptom } from "@/db/models/Symptom";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "../auth/[...nextauth]";
+// import { getServerSession } from "next-auth/next";
+// import { authOptions } from "../auth/[...nextauth]";
 
 export default async function handler(req, res) {
-  const session = await getServerSession(req, res, authOptions);
+  // const session = await getServerSession(req, res, authOptions);
 
   try {
     await dbConnect();
@@ -16,9 +16,9 @@ export default async function handler(req, res) {
 
     const { bookmarked, symptom } = req.query;
 
-    if (bookmarked === "true" && !session) {
-      return res.status(401).json({ status: "Not authorized" });
-    }
+    // if (bookmarked === "true" && !session) {
+    //   return res.status(401).json({ status: "Not authorized" });
+    // }
 
     let symptomFilter = {};
     if (symptom) {
@@ -39,9 +39,9 @@ export default async function handler(req, res) {
                 $expr: {
                   $and: [
                     { $eq: ["$remedyId", "$$remedyId"] },
-                    ...(session?.user?.id
-                      ? [{ $eq: ["$owner", session.user.id] }]
-                      : []),
+                    // ...(session?.user?.id
+                    //   ? [{ $eq: ["$owner", session.user.id] }]
+                    //   : []),
                   ],
                 },
               },

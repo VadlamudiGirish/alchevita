@@ -6,7 +6,7 @@ import CardList from "@/components/CardList/CardList";
 import TitleBar from "@/components/TitleBar/TitleBar";
 import RemedyFilter from "@/components/RemedyFilter/RemedyFilter";
 import { useBookmarks } from "@/hooks/useBookmarks";
-import { useSession } from "next-auth/react";
+// import { useSession } from "next-auth/react";
 
 const EmptyMessage = styled.p`
   margin: 2rem 0;
@@ -22,7 +22,7 @@ const AccessDenied = styled.h2`
 
 export default function Home({ initialSymptom }) {
   const router = useRouter();
-  const { status } = useSession();
+  // const { status } = useSession();
   const [selectedSymptom, setSelectedSymptom] = useState(initialSymptom || "");
   const currentPath = router.pathname;
 
@@ -36,13 +36,18 @@ export default function Home({ initialSymptom }) {
     error,
     mutate,
   } = useSWR(
-    status === "authenticated"
-      ? selectedSymptom
-        ? `/api/remedies?bookmarked=true&symptom=${encodeURIComponent(
-            selectedSymptom
-          )}`
-        : `/api/remedies?bookmarked=true`
-      : null,
+    // status === "authenticated"
+    //   ? selectedSymptom
+    //     ? `/api/remedies?bookmarked=true&symptom=${encodeURIComponent(
+    //         selectedSymptom
+    //       )}`
+    //     : `/api/remedies?bookmarked=true`
+    //   : null,
+    selectedSymptom
+      ? `/api/remedies?bookmarked=true&symptom=${encodeURIComponent(
+          selectedSymptom
+        )}`
+      : `/api/remedies?bookmarked=true`,
     {
       fallbackData: [],
     }
@@ -52,13 +57,13 @@ export default function Home({ initialSymptom }) {
     setSelectedSymptom(router.query.symptom || "");
   }, [router.query.symptom]);
 
-  if (status !== "authenticated") {
-    return (
-      <AccessDenied>
-        Please log in to view your bookmarked remedies
-      </AccessDenied>
-    );
-  }
+  // if (status !== "authenticated") {
+  //   return (
+  //     <AccessDenied>
+  //       Please log in to view your bookmarked remedies
+  //     </AccessDenied>
+  //   );
+  // }
 
   // Symptom filter handlers
   const handleSelect = (symptomName) => {

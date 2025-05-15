@@ -1,7 +1,7 @@
 import RemedyForm from "@/components/RemedyForm/RemadyForm";
 import TitleBar from "@/components/TitleBar/TitleBar";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
+// import { useSession } from "next-auth/react";
 import styled from "styled-components";
 
 const AccessDenied = styled.h2`
@@ -12,11 +12,11 @@ const AccessDenied = styled.h2`
 
 export default function CreateRemedy() {
   const router = useRouter();
-  const { status } = useSession();
+  // const { status } = useSession();
 
-  if (status !== "authenticated") {
-    return <AccessDenied>Please log in to create remedies</AccessDenied>;
-  }
+  // if (status !== "authenticated") {
+  //   return <AccessDenied>Please log in to create remedies</AccessDenied>;
+  // }
 
   async function handleCreate(payload) {
     const res = await fetch("/api/remedies/create", {
