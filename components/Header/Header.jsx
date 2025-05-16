@@ -1,4 +1,5 @@
 import React from "react";
+import { useSession, signIn, signOut } from "next-auth/react";
 import Logo from "../Logo/Logo";
 import TitleBar from "../TitleBar/TitleBar";
 import styled from "styled-components";
@@ -16,6 +17,16 @@ const HeaderContainer = styled.header`
   background-color: white;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.08);
   z-index: 9999;
+`;
+
+const UserInfo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+`;
+
+const UserName = styled.span`
+  font-weight: 500;
 `;
 
 const LogButton = styled.button`
@@ -40,12 +51,20 @@ const LogButton = styled.button`
 `;
 
 export default function Header({ title }) {
+  const { data: session } = useSession();
+
   return (
     <HeaderContainer>
       <Logo />
       <TitleBar title={title} />
-      <LogButton aria-label="Log in to your account">LOG IN</LogButton>
-      {/*Only for Acceptance Criteria*/}
+      {session ? (
+        <UserInfo>
+          <UserName>{session.user.name}</UserName>
+          <LogButton onClick={() => signOut()}>Log Out</LogButton>
+        </UserInfo>
+      ) : (
+        <LogButton onClick={() => signIn("github")}>Log In</LogButton>
+      )}
     </HeaderContainer>
   );
 }
