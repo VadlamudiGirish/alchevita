@@ -6,7 +6,7 @@ const FilterWrapper = styled.section`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f9fafb;
+  background-color: white;
   padding: 1rem 2rem;
   border-radius: 16px;
   box-shadow: 0 2px 8px rgba(155, 255, 255, 0.1);
@@ -17,30 +17,50 @@ const FilterWrapper = styled.section`
 const Select = styled.select`
   padding: 0.75rem 1rem;
   border-radius: 8px;
-  border: 1px solid #d1d5db;
-  background-color: #f9fafb;
-  font-size: 1.5rem;
-  color: #1fab89;
-  min-width: 200px;
+  border: 1px solid #e5e7eb;
+  background-color: white;
+  font-size: 1rem;
+  color: #111827;
+  min-width: 250px;
   outline: none;
+  transition: all 0.2s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%231fab89'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1.5rem;
+
   &:focus {
     border-color: #1fab89;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 0 0 3px rgba(31, 171, 137, 0.2);
+  }
+
+  &:hover {
+    border-color: #9ca3af;
   }
 `;
 
 const ClearButton = styled.button`
-  background: transparent;
+  background: #1fab89;
   border: none;
   cursor: pointer;
   font-size: 1rem;
-  border-radius: 9999px;
-  color: #d1d5db;
+  border-radius: 50%;
+  color: white;
   width: 2rem;
   height: 2rem;
-  background-color: #10b981;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+
   &:hover {
-    opacity: 0.75;
+    background: #178066;
+    transform: scale(1.05);
+  }
+
+  &:active {
+    transform: scale(0.95);
   }
 `;
 
