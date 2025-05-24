@@ -17,12 +17,19 @@ const SymptomPill = styled(Link)`
   padding: 0.25rem 0.75rem;
   font-size: 0.75rem;
   color: var(--text-dark);
-  background-color: white;
+  background-color: var(--surface);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   text-decoration: none;
   max-width: 100%;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background-color: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
 
   @media (min-width: 640px) {
     font-size: 0.875rem;

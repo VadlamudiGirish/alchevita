@@ -22,15 +22,14 @@ const MenuContainer = styled.nav`
   left: 0;
   width: 100%;
   height: 50%;
-  background-color: white;
+  background-color: var(--surface);
   z-index: 1001;
   transform: translateY(${({ isOpen }) => (isOpen ? "0" : "100%")});
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out, background-color 0.3s ease;
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
   display: flex;
   flex-direction: column;
   border-radius: 12px 12px 0 0;
-  transition: opacity 0.3s ease-in-out;
   overflow-y: auto;
 `;
 
@@ -42,7 +41,8 @@ const CloseButton = styled.button`
   border: none;
   cursor: pointer;
   padding: 0.5rem;
-  color: #666;
+  color: var(--text-dark);
+  transition: color 0.2s ease-in-out;
 
   &:hover {
     color: var(--primary);
@@ -64,9 +64,10 @@ const MenuContent = styled.div`
 const MenuTitle = styled.h2`
   font-size: 1.5rem;
   font-weight: 600;
-  color: #333;
+  color: var(--text-dark);
   margin: 0;
   text-align: center;
+  transition: color 0.3s ease;
 `;
 
 const MenuSection = styled.div`
@@ -105,18 +106,20 @@ const MenuItem = styled.button`
 const BoldText = styled.strong`
   font-weight: 700;
   font-size: 1.2rem;
-  color: #333;
+  color: var(--text-dark);
   display: block;
   text-align: center;
+  transition: color 0.3s ease;
 `;
 
 const AboutDescription = styled.p`
   font-size: 1.1rem;
   line-height: 1.6;
-  color: #666;
+  color: var(--text-dark);
   text-align: center;
   max-width: 500px;
   margin: 0;
+  transition: color 0.3s ease;
 `;
 
 const ImageContainer = styled.div`

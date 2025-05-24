@@ -9,12 +9,13 @@ const NavContainer = styled.nav`
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: var(--background);
+  background-color: var(--surface);
   border-top: 1px solid var(--text-dark);
   padding: 1rem;
   display: flex;
   justify-content: space-around;
   z-index: 50;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 `;
 
 const NavItem = styled(Link)`
@@ -22,9 +23,15 @@ const NavItem = styled(Link)`
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  color: ${({ isActive }) => (isActive ? "#0E6F5D" : "#6b7280")};
+  color: ${({ isActive }) =>
+    isActive ? "var(--primary)" : "var(--text-dark)"};
   width: 24px;
   height: 24px;
+  transition: color 0.2s ease-in-out;
+
+  &:hover {
+    color: var(--primary);
+  }
 `;
 
 export default function Navbar() {

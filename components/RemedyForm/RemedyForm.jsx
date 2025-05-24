@@ -28,14 +28,16 @@ const Input = styled.input`
   color: var(--text-dark);
   font-size: 1rem;
   font-family: inherit;
-  background-color: white;
+  background-color: var(--surface);
   outline: none;
   transition: all 0.2s ease;
   box-shadow: 0 1px 2px 0 var(--primary);
 
   &:focus {
-    border-color: var(--primary, #38b2ac);
+    border-color: var(--primary);
     box-shadow: 0 0 0 3px rgba(56, 178, 172, 0.2);
+  }
+
   ${(props) =>
     props.error &&
     css`
@@ -44,7 +46,6 @@ const Input = styled.input`
         box-shadow: 0 0 0 3px rgba(245, 101, 101, 0.2);
       }
     `}
-  
 `;
 
 const Textarea = styled.textarea`
@@ -57,6 +58,8 @@ const Textarea = styled.textarea`
   font-family: inherit;
   resize: vertical;
   outline: none;
+  background-color: var(--surface);
+  color: var(--text-dark);
   transition: all 0.2s ease;
   box-shadow: 0 1px 2px 0 var(--primary);
 
@@ -64,12 +67,14 @@ const Textarea = styled.textarea`
     border-color: var(--primary);
     box-shadow: 0 0 0 2px rgba(56, 178, 172, 0.2);
   }
+
   ${(props) =>
     props.error &&
     css`
       border-color: var(--color-danger-text);
     `}
 `;
+
 const Button = styled.button`
   padding: 0.75rem 1.5rem;
   background-color: var(--primary);
@@ -125,10 +130,9 @@ const Select = styled.select`
   padding: 0.5rem 1rem;
   border-radius: 1rem;
   border: 1px solid var(--text-dark);
-  background-color: white;
+  background-color: var(--surface);
   font-size: 1rem;
   font-family: Manrope;
-  background-color: var(--background);
   color: var(--text-dark);
   min-width: 250px;
   outline: none;
@@ -145,7 +149,7 @@ const Select = styled.select`
   }
 
   &:hover {
-    border-color: var(--text-dark);
+    border-color: var(--primary);
   }
 `;
 

@@ -6,17 +6,20 @@ import BookMarkButton from "../BookmarkButton/BookmarkButton";
 import { useBookmarks } from "@/hooks/useBookmarks";
 
 const CardContainer = styled.li`
-  position: relative; /* <-- ensure absolute children (bookmark) are positioned correctly */
+  position: relative;
   border: 1px solid var(--text-dark);
   border-radius: 0.8rem;
   padding: 1.5rem;
-  background-color: var(--background);
+  background-color: var(--surface);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 `;
 
 const ImageContainer = styled.div`
   position: relative;
   height: 10rem;
   margin-bottom: 20px;
+  border-radius: 8px;
+  overflow: hidden;
 `;
 
 const Title = styled.h3`
@@ -31,6 +34,8 @@ const Title = styled.h3`
   line-height: 1.2;
   height: 2.4em;
   word-break: break-word;
+  color: var(--text-dark);
+  transition: color 0.3s ease;
 `;
 
 export default function Card({ remedy, currentPath }) {

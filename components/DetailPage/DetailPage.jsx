@@ -14,21 +14,21 @@ const Wrapper = styled.section`
 const BackButton = styled.button`
   margin-bottom: 1.5rem;
   cursor: pointer;
-  color: inherit;
+  color: var(--text-dark);
   background: none;
   border: none;
   padding: 0;
+  transition: color 0.2s ease-in-out;
 
   &:hover {
     color: var(--primary);
   }
-
-  transition: color 0.2s ease-in-out;
 `;
 
 const StyledSVG = styled.svg`
   width: 2rem;
   height: 2rem;
+  transition: color 0.2s ease-in-out;
 `;
 
 const Flex = styled.div`
@@ -63,6 +63,8 @@ const Aside = styled.aside`
 const Article = styled.article`
   width: 100%;
   padding: 0 1rem;
+  color: var(--text-dark);
+  transition: color 0.3s ease;
 
   @media (min-width: 768px) {
     width: 50%;
@@ -74,6 +76,8 @@ const Title = styled.h2`
   line-height: 2.25rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
+  color: var(--text-dark);
+  transition: color 0.3s ease;
 `;
 
 const StyledList = styled.ul`
@@ -86,6 +90,8 @@ const StyledList = styled.ul`
     padding-left: 1.5rem;
     margin-bottom: 0.5rem;
     line-height: 1.5;
+    color: var(--text-dark);
+    transition: color 0.3s ease;
 
     &::before {
       content: "🍃";
@@ -148,22 +154,26 @@ const ModalOverlay = styled.div`
 `;
 
 const ModalContent = styled.div`
-  background: white;
+  background: var(--surface);
   padding: 2rem;
   border-radius: 8px;
   max-width: 420px;
   width: 100%;
   text-align: center;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
 `;
 
 const ModalTitle = styled.h3`
   margin-bottom: 1rem;
+  color: var(--text-dark);
+  transition: color 0.3s ease;
 `;
 
 const ModalText = styled.p`
   margin-bottom: 2rem;
-  color: #333333;
+  color: var(--text-dark);
+  transition: color 0.3s ease;
 `;
 
 const ModalActions = styled.div`

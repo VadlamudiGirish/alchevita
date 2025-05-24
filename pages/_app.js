@@ -1,8 +1,12 @@
 import { SWRConfig } from "swr";
-import { createGlobalStyle } from "styled-components";
+import {
+  createGlobalStyle,
+  ThemeProvider as StyledThemeProvider,
+} from "styled-components";
 import { SessionProvider } from "next-auth/react";
 import Layout from "@/components/Layout/Layout.jsx";
 import GlobalStyle from "../styles.js";
+import { ThemeProvider } from "../context/ThemeContext";
 
 const RootStyle = createGlobalStyle`
   #__next {
@@ -29,13 +33,15 @@ export default function App({
 }) {
   return (
     <SessionProvider session={session}>
-      <RootStyle />
-      <GlobalStyle />
-      <SWRConfig value={{ fetcher }}>
-        <Layout title={Component.pageTitle}>
-          <Component {...pageProps} />
-        </Layout>
-      </SWRConfig>
+      <ThemeProvider>
+        <RootStyle />
+        <GlobalStyle />
+        <SWRConfig value={{ fetcher }}>
+          <Layout title={Component.pageTitle}>
+            <Component {...pageProps} />
+          </Layout>
+        </SWRConfig>
+      </ThemeProvider>
     </SessionProvider>
   );
 }

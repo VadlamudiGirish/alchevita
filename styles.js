@@ -1,17 +1,17 @@
 import { createGlobalStyle } from "styled-components";
 
 export default createGlobalStyle`
-
   :root {
-  --primary: #1FAB89;
-  --secondary: #62D2A2;
-  --background: #D7FBE8;
-  --text-dark: #0E6F5D;
-  --color-danger-bg: #f8d7da;
-  --color-danger-text: #e20a40;
-  --color-danger-border: #eb979f;
-  --color-danger-hover-bg: #f1c0c4;
-  --color-disabled: #92a29f;
+    --primary: ${({ theme }) => theme.primary};
+    --secondary: ${({ theme }) => theme.secondary};
+    --background: ${({ theme }) => theme.background};
+    --surface: ${({ theme }) => theme.surface};
+    --text-dark: ${({ theme }) => theme.text};
+    --color-danger-bg: ${({ theme }) => theme.danger.background};
+    --color-danger-text: ${({ theme }) => theme.danger.text};
+    --color-danger-border: ${({ theme }) => theme.danger.border};
+    --color-danger-hover-bg: ${({ theme }) => theme.danger.hoverBg};
+    --color-disabled: ${({ theme }) => theme.disabled};
   }
 
   *,
@@ -23,5 +23,8 @@ export default createGlobalStyle`
   body {
     margin: 0;
     font-family: 'Manrope', system-ui, Arial, sans-serif;
+    background-color: ${({ theme }) => theme.background};
+    color: ${({ theme }) => theme.text};
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 `;
